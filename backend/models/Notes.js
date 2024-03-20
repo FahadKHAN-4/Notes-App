@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
+const { Schema } = mongoose;
 
 const NotesSchema = new Schema({
   title:{
@@ -15,7 +16,7 @@ const NotesSchema = new Schema({
   },
   date:{
     type:Date,
-    required: Date.now
+    default: Date.now
   },
   
 });

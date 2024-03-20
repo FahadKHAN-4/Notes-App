@@ -1,17 +1,22 @@
 const connectToMongo = require('./db');
+const express = require('express'); 
+
+//MongoDB
 connectToMongo();
 
-const express = require('express'); 
+//Express
 const app = express(); 
 const PORT = 3000; 
+
+app.use(express.json());
 
 app.use('/api/auth', require('./routes/auth'))
 app.use('/api/notes', require('./routes/notes'))
 
-app.get('/', (req, res)=>{ 
-	res.status(200); 
-	res.send("Welcome to root URL of Server"); 
-}); 
+// app.get('/', (req, res)=>{ 
+// 	res.status(200); 
+// 	res.send("Welcome to root URL of Server"); 
+// }); 
 
 app.listen(PORT, (error) =>{ 
 	if(!error) 
