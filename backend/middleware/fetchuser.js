@@ -11,6 +11,7 @@ const fetchuser = (req, res, next) => {
 
     try {
         const data = jwt.verify(token, JWT_SECRET);
+        // will only return id of a document as thats whats in JWT token
         req.user = data.user;
         next();
     } catch (errors) {

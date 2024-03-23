@@ -1,12 +1,12 @@
 const connectToMongo = require('./db');
-const express = require('express'); 
+const express = require('express');
 
 //MongoDB
 connectToMongo();
 
 //Express
-const app = express(); 
-const PORT = 5000; 
+const app = express();
+const PORT = 5000;
 
 app.use(express.json());
 
@@ -18,10 +18,10 @@ app.use('/api/notes', require('./routes/notes'))
 // 	res.send("Welcome to root URL of Server"); 
 // }); 
 
-app.listen(PORT, (error) =>{ 
-	if(!error) 
-		console.log("Server is Successfully Running, and App is listening on port "+ PORT);
+app.listen(PORT, (error) => {
+	if (!error)
+		console.log("Server is Successfully Running, and App is listening on port " + PORT);
 	else
-		console.log("Error occurred, server can't start", error); 
-	} 
+		console.log("Error occurred, server can't start", error);
+}
 ); 
