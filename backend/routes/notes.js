@@ -59,11 +59,29 @@ router.put('/updatenote/:id', fetchuser,
         if (!note) { return res.status(404).send("Not Found"); }
 
         if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
-            return res.status(401).send("Access not allowerd");
+            return res.status(401).send("Access not allowed");
         }
 
-        note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
+        note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true }); // set requries object and new: true returns the updated note
         res.json({ note });
+    }
+
+);
+
+//Route 4: Delete note
+
+router.put('/deletenote/:id', fetchuser,
+    async (req, res) => {
+
+        let note = await Note.findById(req.params.id);
+        if (!note) { return res.status(404).send("Not Found"); }
+
+        if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
+            return res.status(401).send("Access not allowed");
+        }
+
+        note = await Note.findByIdAndDelete(req.params.id); // set requries object and new: true returns the updated note
+        res.send("success");
     }
 
 );
