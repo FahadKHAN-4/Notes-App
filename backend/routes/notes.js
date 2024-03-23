@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const Notes = require('../models/Note');
+const Note = require('../models/Note');
 const fetchuser = require('../middleware/fetchuser');
 const { body, validationResult } = require('express-validator');
 
@@ -10,7 +10,7 @@ const { body, validationResult } = require('express-validator');
 router.get('/fetchallnotes', fetchuser,
     async (req, res) => {
         try {
-            const notes = await Notes.find({ user: req.user.id });
+            const notes = await Note.find({ user: req.user.id });
             res.json(notes);
         } catch (error) {
             res.status(500).json({ errors: [{ msg: 'Server error' }] });
@@ -18,7 +18,7 @@ router.get('/fetchallnotes', fetchuser,
     }
 );
 
-//Route 2: Add notes
+//Route 2: Add a note
 router.post('/addnote', fetchuser,
     body('title').isLength({ min: 1 }),
     body('description').isLength({ min: 1 }),
@@ -33,7 +33,7 @@ router.post('/addnote', fetchuser,
 
             const { title, description, tag } = req.body;
 
-            const note = new Notes({
+            const note = new Note({
                 title, description, tag, user: req.user.id // req.user.id from middleware fetchuser
             })
 
@@ -44,6 +44,28 @@ router.post('/addnote', fetchuser,
             res.status(500).json({ errors: [{ msg: 'Server error' }] });
         }
     }
+);
+
+//Route 3: Update note
+router.put('/updatenote/:id', fetchuser,
+    async (req, res) => {
+        const { title, description, tag } = req.body;
+        const newNote = {};
+        if (title) { newNote.title = title };
+        if (description) { newNote.description = description };
+        if (tag) { newNote.tag = tag };
+
+        let note = await Note.findById(req.params.id);
+        if (!note) { return res.status(404).send("Not Found"); }
+
+        if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
+            return res.status(401).send("Access not allowerd");
+        }
+
+        note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true });
+        res.json({ note });
+    }
+
 );
 
 module.exports = router;
