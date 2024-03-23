@@ -49,21 +49,26 @@ router.post('/addnote', fetchuser,
 //Route 3: Update note
 router.put('/updatenote/:id', fetchuser,
     async (req, res) => {
-        const { title, description, tag } = req.body;
-        const newNote = {};
-        if (title) { newNote.title = title };
-        if (description) { newNote.description = description };
-        if (tag) { newNote.tag = tag };
+        try{
+            const { title, description, tag } = req.body;
+            const newNote = {};
+            if (title) { newNote.title = title };
+            if (description) { newNote.description = description };
+            if (tag) { newNote.tag = tag };
 
-        let note = await Note.findById(req.params.id);
-        if (!note) { return res.status(404).send("Not Found"); }
+            let note = await Note.findById(req.params.id);
+            if (!note) { return res.status(404).send("Not Found"); }
 
-        if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
-            return res.status(401).send("Access not allowed");
+            if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
+                return res.status(401).send("Access not allowed");
+            }
+
+            note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true }); // set requries object and new: true returns the updated note
+            res.json({ note });
+
+        }catch(error){
+            res.status(500).json({ errors: [{ msg: 'Server error' }] });
         }
-
-        note = await Note.findByIdAndUpdate(req.params.id, { $set: newNote }, { new: true }); // set requries object and new: true returns the updated note
-        res.json({ note });
     }
 
 );
@@ -72,16 +77,20 @@ router.put('/updatenote/:id', fetchuser,
 
 router.put('/deletenote/:id', fetchuser,
     async (req, res) => {
+        try{
+            let note = await Note.findById(req.params.id);
+            if (!note) { return res.status(404).send("Not Found"); }
 
-        let note = await Note.findById(req.params.id);
-        if (!note) { return res.status(404).send("Not Found"); }
+            if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
+                return res.status(401).send("Access not allowed");
+            }
+            
+            note = await Note.findByIdAndDelete(req.params.id); // set requries object and new: true returns the updated note
+            res.send("success");
 
-        if (note.user.toString() !== req.user.id) { // security check for one user accessing anothers account.
-            return res.status(401).send("Access not allowed");
+        }catch(error){
+            res.status(500).json({ errors: [{ msg: 'Server error' }] });
         }
-
-        note = await Note.findByIdAndDelete(req.params.id); // set requries object and new: true returns the updated note
-        res.send("success");
     }
 
 );
