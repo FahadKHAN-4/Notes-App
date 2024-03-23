@@ -8,8 +8,8 @@ var jwt = require('jsonwebtoken');
 const JWT_SECRET = "fahad123"
 
 // Route 1: Create a user
-router.post('/createuser', body('email', "Please enter a valid email").isEmail(),
-    body('name', "Enter a valid name of length < 25.").isLength({ max: 25 }),
+router.post('/createuser', body('name', "Enter a valid name of length < 25.").isLength({ max: 25 }),
+    body('email', "Please enter a valid email").isEmail(),
     body('password').isLength({ min: 5 })
     , async (req, res)=>{ 
 
@@ -46,9 +46,8 @@ router.post('/createuser', body('email', "Please enter a valid email").isEmail()
 ); 
 
 // Routhe 2: Authenticate a user at login
-
 router.post('/login', body('name', "Enter a valid name of length > 3.").isLength({ max: 25 }),
-  body('email').isEmail(),
+  body('email', "Please enter a valid email").isEmail(),
   body('password', "Password cannot be blank").exists()
   , async (req, res) => {
 
@@ -60,15 +59,12 @@ router.post('/login', body('name', "Enter a valid name of length > 3.").isLength
     const {email, password} = req.body;
 
     try{
-
       let user = await User.findOne({email});
-
       if(!user){
         return res.status(400).json({ errors: "The email or password is not correct." });
       }
 
       const passwordComapre = await bcrypt.compare(password, user.password);
-
       if(!passwordComapre){
         return res.status(400).json({ errors: "The email or password is not correct." });
       }
@@ -78,7 +74,6 @@ router.post('/login', body('name', "Enter a valid name of length > 3.").isLength
           id: user.id
         }
       }
-
       const authtoken = jwt.sign(payload,JWT_SECRET);
       res.json({authtoken});
 
