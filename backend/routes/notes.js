@@ -5,7 +5,6 @@ const Note = require('../models/Note');
 const fetchuser = require('../middleware/fetchuser');
 const { body, validationResult } = require('express-validator');
 
-
 //Route 1: Get all notes
 router.get('/fetchallnotes', fetchuser,
     async (req, res) => {
@@ -92,7 +91,6 @@ router.put('/deletenote/:id', fetchuser,
             res.status(500).json({ errors: [{ msg: 'Server error' }] });
         }
     }
-
 );
 
 module.exports = router;
