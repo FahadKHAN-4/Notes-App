@@ -21,10 +21,10 @@ function App() {
   return (
     <div>
       <NoteState>
-      <Navbar />
-      <div className='container'>
-      <RouterProvider router={router}></RouterProvider>
-      </div>
+        <Navbar />
+        <div className='container'>
+          <RouterProvider router={router}></RouterProvider>
+        </div>
       </NoteState>
     </div>
 

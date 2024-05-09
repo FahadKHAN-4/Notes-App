@@ -7,15 +7,15 @@ const NoteState = (props) => {
     const notesInitials = [];
     const [notes, setNotes] = useState(notesInitials);
 
+    // Get All Notes
     async function GetAllNotes() {
         try {
             const response = await fetch(`${host}/api/notes/fetchallnotes`, {
-                method: "GET", // or 'PUT'
+                method: "GET",
                 headers: {
                     "Content-Type": "application/json",
                     "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVmZTgwYTk3YTI3MDZlOTNjZmNjYWM1In0sImlhdCI6MTcxMTE3NzkwN30.D6io2zRI2rAFuEHaPnTenxuIE7FKG2sxqru5_g1um2U",
                 }
-                // body: JSON.stringify(data),
             });
 
             const result = await response.json();
@@ -46,7 +46,7 @@ const NoteState = (props) => {
     const deleteNote = async (id) => {
 
         const response = await fetch(`${host}/api/notes/deletenote/${id}`, {
-            method: "PUT", 
+            method: "DELETE", 
             headers: {
                 "Content-Type": "application/json",
                 "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVmZTgwYTk3YTI3MDZlOTNjZmNjYWM1In0sImlhdCI6MTcxMTE3NzkwN30.D6io2zRI2rAFuEHaPnTenxuIE7FKG2sxqru5_g1um2U",
@@ -58,18 +58,31 @@ const NoteState = (props) => {
 
     }
     // Edit a Note
-    const editNote = (id, title, description, tag) => {
-
-        for (let index = 0; index < notes.length; index++) {
-            const element = notes[index];
-
-            if (id == element._id) {
-                element.title = title;
-                element.description = description;
-                element.tag = tag;
+    const editNote = async (id, title, description, tag) => {
+        // API call to update the note on the server
+        const response = await fetch(`${host}/api/notes/updatenote/${id}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "auth-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVmZTgwYTk3YTI3MDZlOTNjZmNjYWM1In0sImlhdCI6MTcxMTE3NzkwN30.D6io2zRI2rAFuEHaPnTenxuIE7FKG2sxqru5_g1um2U",
+            },
+            body: JSON.stringify({ title, description, tag })
+        });
+        const result = await response.json();
+        console.log("Updated Note:", result);
+        
+        // Update the note in the local state
+        let newNotes = JSON.parse(JSON.stringify(notes)); // Creating a deep copy
+        for (let index = 0; index < newNotes.length; index++) {
+            if (newNotes[index]._id === id) {
+                newNotes[index].title = title;
+                newNotes[index].description = description;
+                newNotes[index].tag = tag;
+                break;
             }
         }
-    }
+        setNotes(newNotes);
+    };
 
     return (
 

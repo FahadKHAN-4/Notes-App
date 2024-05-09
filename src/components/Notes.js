@@ -5,8 +5,8 @@ import AddNote from './AddNote';
 
 export default function Notes() {
     const context = useContext(noteContext);
-    const {notes, GetAllNotes} = context;
-    
+    const { notes, GetAllNotes } = context;
+
     useEffect(() => {
         GetAllNotes()
     }, [])
@@ -16,7 +16,7 @@ export default function Notes() {
             <AddNote />
             <h1>Your Notes</h1>
             <div className='row'>{notes.map((note) => {
-                return <NoteItem note={note} key = {note._id} />
+                return <NoteItem note={note} key={note._id} />
             }
             )}</div>
 
