@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Navbar = () => {
+
+    const handleLogOut = () =>{
+        localStorage.removeItem("token");
+    }
     return (
         <div>
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -12,9 +16,13 @@ const Navbar = () => {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item"><a className="nav-link" href="/PastNotes">Past Notes</a></li>
-
                         </ul>
                     </div>
+                    <form className="d-flex">
+                        <a className="btn bg-white mx-1" href="/Login" >Login</a>
+                        <a className="btn btn-danger mx-1" href="/Login" onClick={handleLogOut}>Log Out</a>
+                        <a className="btn bg-white mx-1" href="/Signup">Sign Up</a>
+                    </form>
                 </div>
             </nav>
         </div>

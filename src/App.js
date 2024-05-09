@@ -3,8 +3,7 @@ import Home from './components/Home'
 import Navbar from './components/Navbar';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NoteState from './context/notes/NoteState';
-import NoteItem from './components/NoteItem';
-import Notes from './components/Notes';
+import Login from './components/Login';
 
 function App() {
 
@@ -12,11 +11,11 @@ function App() {
     {
       path: "/",
       element: <Home />,
+    },
+    {
+      path: "/login",
+      element: <Login />,
     }
-    // {
-    //   path: "/PastNotes",
-    //   element: <Notes />,
-    // }
   ]);
   return (
     <div>

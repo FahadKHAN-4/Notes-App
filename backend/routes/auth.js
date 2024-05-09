@@ -55,6 +55,8 @@ router.post('/login', body('name', "Enter a valid name of length > 3.").isLength
 
   async (req, res) => {
 
+    let success = false;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -65,11 +67,13 @@ router.post('/login', body('name', "Enter a valid name of length > 3.").isLength
     try {
       let user = await User.findOne({ email });
       if (!user) {
+        success = false;
         return res.status(400).json({ errors: "The email or password is not correct." });
       }
 
       const passwordComapre = await bcrypt.compare(password, user.password);
       if (!passwordComapre) {
+        success = false;
         return res.status(400).json({ errors: "The email or password is not correct." });
       }
 
@@ -79,7 +83,8 @@ router.post('/login', body('name', "Enter a valid name of length > 3.").isLength
         }
       }
       const authtoken = jwt.sign(payload, JWT_SECRET);
-      res.json({ authtoken });
+      success = true;
+      res.json({ authtoken , success});
 
     } catch (error) {
       res.status(500).json({ errors: [{ msg: 'Server error' }] });
