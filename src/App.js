@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import NoteState from './context/notes/NoteState';
 import Login from './components/Login';
+import Signup from './components/Signup';
 
 function App() {
   const token = localStorage.getItem('token');
@@ -21,6 +22,10 @@ function App() {
     {
       path: "/home",
       element: <Home />,
+    },
+    {
+      path: "/Signup",
+      element: <Signup />,
     }
   ]);
 

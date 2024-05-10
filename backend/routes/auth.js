@@ -15,8 +15,11 @@ router.post('/createuser', body('name', "Enter a valid name of length < 25.").is
 
   async (req, res) => {
 
+    let success = false;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      success = false;
       return res.status(400).json({ errors: errors.array() });
     }
 
@@ -37,12 +40,15 @@ router.post('/createuser', body('name', "Enter a valid name of length < 25.").is
       }
 
       const authtoken = jwt.sign(data, JWT_SECRET);
-      res.json({ authtoken });
+      success = true;
+      res.json({ success, authtoken });
 
     } catch (err) {
       if (err.code === 11000) {
+        success = false;
         return res.status(400).json({ msg: 'The email address you have entered is already associated with another account.' });
       }
+      success = false;
       res.status(500).json({ errors: [{ msg: 'Server error' }] });
     }
   }

@@ -11,7 +11,7 @@ function NoteItem({ note }) {
 
     const handleEdit = () => {
         editNote(editedNote._id, editedNote.title, editedNote.description, editedNote.tag);
-        setEditMode(false); // Exit edit mode after saving
+        setEditMode(false);
     };
 
     return (

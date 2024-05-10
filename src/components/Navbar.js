@@ -19,9 +19,7 @@ const Navbar = () => {
                         </ul>
                     </div>
                     <form className="d-flex">
-                        <a className="btn bg-white mx-1" href="/Login" >Login</a>
                         <a className="btn btn-danger mx-1" href="/Login" onClick={handleLogOut}>Log Out</a>
-                        <a className="btn bg-white mx-1" href="/Signup">Sign Up</a>
                     </form>
                 </div>
             </nav>
