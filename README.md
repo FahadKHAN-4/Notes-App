@@ -13,8 +13,8 @@ Start your mongodb server first at port 27017.
 ### `nodemon`
 Start listing at port 5000 via express.
 
-cd backend
-Run: ./node_modules/.bin/nodemon ./index.js
+- cd backend
+- Run: ./node_modules/.bin/nodemon ./index.js
 
 ### `npm install`
 
