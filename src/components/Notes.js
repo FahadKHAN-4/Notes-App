@@ -5,18 +5,11 @@ import AddNote from './AddNote';
 
 export default function Notes() {
     const context = useContext(noteContext);
-    const { notes, GetAllNotes, loading } = context;
+    const { notes, GetAllNotes } = context;
     const token = localStorage.getItem('token');
 
-
     useEffect(() => {
-        if (loading) {
-            console.log("loading");
-        }
-
-        if(token){
-            GetAllNotes();
-        }
+        GetAllNotes();
     }, [token])
 
     return (

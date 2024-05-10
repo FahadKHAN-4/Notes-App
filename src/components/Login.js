@@ -9,7 +9,7 @@ function Login() {
 
     useEffect(() => {
         if (isLoggedIn) {
-            navigate('/');
+            navigate('/home');
         }
     }, [isLoggedIn, navigate]);
 

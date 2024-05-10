@@ -7,13 +7,13 @@ const NoteState = (props) => {
     const host = "http://localhost:5000"
     const notesInitials = [];
     const [notes, setNotes] = useState(notesInitials);
-    const token = localStorage.getItem('token');
-    const [loading, setLoading] = useState(true);
+    
+    let token = localStorage.getItem('token');
 
     // Get All Notes
     async function GetAllNotes() {
-        setLoading(true);
         try {
+            token = localStorage.getItem('token');
             const response = await fetch(`${host}/api/notes/fetchallnotes`, {
                 method: "GET",
                 headers: {
@@ -27,8 +27,6 @@ const NoteState = (props) => {
             setNotes(result);
         } catch (error) {
             console.error("Error:", error);
-        }finally {
-            setLoading(false);
         }
     }
 
@@ -92,7 +90,7 @@ const NoteState = (props) => {
 
     return (
 
-        <noteContext.Provider value={{ notes, addNote, deleteNote, editNote, GetAllNotes, loading}}>
+        <noteContext.Provider value={{ notes, addNote, deleteNote, editNote, GetAllNotes}}>
             {props.children}
         </noteContext.Provider>
     )

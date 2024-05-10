@@ -6,6 +6,7 @@ const fetchuser = (req, res, next) => {
     const token = req.header('auth-token');
 
     if (!token) {
+        console.log(token);
         res.status(401).send({ error: "Please authenticate using a valid token." });
     }
 
@@ -15,7 +16,8 @@ const fetchuser = (req, res, next) => {
         req.user = data.user;
         next();
     } catch (errors) {
-        res.status(401).send({ error: "Please authenticate using a valid token." });
+        console.log(errors);
+        res.status(401).send({ error: "Please authenticate using a valid token!" });
     }
 
 }
